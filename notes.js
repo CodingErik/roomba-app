@@ -3,8 +3,8 @@
 
 // * user given input // this is what our program will take in  
 // ? this will be collected as a JSON, we can collect this from a form or something like this 
-    // room dimensions                  // type Array [x,y]  // [5,10]  5 units wide 10 units high
-    // intial location of the roomba    // type Array [x,y]
+    // room dimensions                  // type Array [x,y]  // [5,10]  5 units wide 10 units high  // *** [DONE]
+    // intial location of the roomba    // type Array [x,y]                                         // *** [DONE]
     // dirt locations                   // type Array [x,y] // dirt location is specified like this 
     // driving instructions             // given in an Array of string ['N','S','E','W']
 
