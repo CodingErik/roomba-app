@@ -1,7 +1,7 @@
 import React from "react";
 import { BrowserRouter as Router, Route, Switch } from "react-router-dom";
 import Results from "./pages/Results";
-import Home from "./pages/Home"
+import Home from "./pages/Home/Home"
 import NoMatch from "./pages/NoMatch";
 import Nav from "./Nav/index";
 
