@@ -36,11 +36,26 @@ let userData =
     drivingInstructions: [
         'N',
         'N',
+        'N',
+        'N',
+        'N',
+        'S',
+        'S',
+        'S',
+        'S',
+        'S',
+        'S',
+        'E',
+        'E',
+        'E',
+        'E',
+        'E',
         'W',
         'W',
         'W',
         'W',
         'W',
+        'W'
     ]
 }
 
