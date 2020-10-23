@@ -23,34 +23,7 @@
 
 // *** when results are given the user will be redirected 
 
-let userData =
-{
-    roomDimension: [10, 10],
-    initialRoombaLocation: [1, 1],
-    dirtLocation: [
-        [1, 2],
-        [3, 5],
-        [5, 5],
-        [7, 9],
-    ],
-    drivingInstructions: [
-        'N',
-        'E',
-        'E',
-        'N',
-        'N',
-        'N',
-        'E',
-        'E',
-        'S',
-        'W',
-        'S',
-        'S',
-        'S',
-        'S',
-        'S',
-    ]
-}
+
 
 function checkForDirt(currentLocation, arrayOfDirt) {
     let result = arrayOfDirt.filter(dirtSpot => {
