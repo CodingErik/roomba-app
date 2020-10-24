@@ -1,7 +1,7 @@
 import {
   // *** USER INPUTS ***** 
   ADD_ROOM_DIMENSION,
-  ADD_INTIAL_ROOMBA_LOCATION,
+  ADD_ROOMBA_LOCATION,
   ADD_DIRT_LOCATION,
   ADD_DRIVING_INSTRUCTIONS,
   ADD_SUBMITMESSAGE,
@@ -18,7 +18,7 @@ export const initialState = {
   distanceTraveled: 0,
   // USER INPUTS 
   roomDimension: [],
-  initialRoombaLocation: [],
+  roombaLocation: [],
   dirtLocation: [],
   drivingInstructions: [],
   // OUTPUT 
@@ -31,6 +31,8 @@ export default (state = initialState, action) => {
     // USER INPUT 
     case ADD_ROOM_DIMENSION:
       return { ...state, roomDimension: action.payload }
+    case ADD_ROOMBA_LOCATION:
+      return { ...state, roombaLocation: action.payload }
     case ADD_DRIVING_INSTRUCTIONS:
       return { ...state, drivingInstructions: state.drivingInstructions.concat(action.payload), clicked: true }
     case BACKSPACE_DRIVING_INSTRUCTIONS:

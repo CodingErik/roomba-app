@@ -1,6 +1,6 @@
 import {
   ADD_ROOM_DIMENSION,
-  ADD_INTIAL_ROOMBA_LOCATION,
+  ADD_ROOMBA_LOCATION,
   ADD_DIRT_LOCATION,
   ADD_DRIVING_INSTRUCTIONS,
   ADD_SUBMITMESSAGE,
@@ -14,8 +14,8 @@ export const addRoomDimension = (data) => ({
   type: ADD_ROOM_DIMENSION,
   payload: data
 });
-export const addInitialRoombaLocation = (data) => ({
-  type: ADD_INTIAL_ROOMBA_LOCATION,
+export const addRoombaLocation = (data) => ({
+  type: ADD_ROOMBA_LOCATION,
   payload: data
 });
 export const addDirtLocation = (data) => ({
