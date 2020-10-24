@@ -4,6 +4,7 @@ import Results from "./pages/Results";
 import Home from "./pages/Home/Home"
 import NoMatch from "./pages/NoMatch";
 import Nav from "./Nav/index";
+import FormComponent from './pages/FormComponent'
 
 
 function App() {
@@ -14,6 +15,7 @@ function App() {
         <Switch>
           <Route exact path={"/"} component={Home} />
           <Route exact path="/results" component={Results} />
+          <Route exact path="/form" component={FormComponent} />
           <Route exact path="/*" component={NoMatch} />
         </Switch>
       </div>
