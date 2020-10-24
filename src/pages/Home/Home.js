@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Form from 'react-bootstrap/Form'
@@ -6,23 +6,60 @@ import Container from 'react-bootstrap/Container'
 import Col from 'react-bootstrap/Col'
 import Row from 'react-bootstrap/Row'
 import Button from 'react-bootstrap/Button'
-// import { useDispatch, useSelector } from 'react-redux';
-// import { addPost, submittedPostMsg } from '../actions';
+import Alert from '../../components/Alert'
+import DrivingCard from '../../components/DrivingCard'
+import {
+    addRoomDimension,
+    addInitialRoombaLocation,
+    addDirtLocation,
+    addDrivingInstructions,
+    backspaceDrivingInstructions,
+    clearDrivingInstructions,
+    addSubmitMessage
+} from '../../actions';
+import { useDispatch, useSelector } from 'react-redux';
+
+// importing Utils 
+import coordinate from '../../Utils/coordinates'
+import checkForDirt from '../../Utils/checkForDirt'
+
+// importing dummy data for now 
+import data from '../../dummyData.json'
 
 
 function Home(props) {
 
-    const [addedPost, setAddedPost] = useState('')
+    // const [dirtCollected, setDirtCollected] = useState(0); 
+    // const [wallsHit, setWallsHit] = useState(0); 
+    // const [distanceTraveled, setDistanceTraveled] = useState(0); 
+    // const [currentRoombaLocation, setCurrentRoombaLocation ] = ([]); 
+
+    const dispatch = useDispatch();
+
+    const [
+        clicked,
+        roomDimension,
+        initialRoombaLocation,
+        dirtLocation,
+        drivingInstructions,
+        submitMsg
+    ] = useSelector((state) => [
+        state.clicked,
+        state.roomDimension,
+        state.initialRoombaLocation,
+        state.dirtLocation,
+        state.drivingInstructions,
+        state.submitMsg
+    ]);
 
 
-    // const dispatch = useDispatch();
     const formik = useFormik({
         initialValues: {
             xRoomDimension: 0,
             yRoomDimension: 0,
             xRoombaStarting: 0,
             yRoombaStarting: 0,
-            friends: ['jared', 'ian'],
+            // friends: ['jared', 'ian'],
         },
         // dirty 
         validationSchema: Yup.object().shape({
@@ -33,16 +70,123 @@ function Home(props) {
         }),
 
         onSubmit: (values) => {
-            console.log(values);
-            //   dispatch(addStartingInfo({ ...values })); // here we will add the starting values for roomba 
-            setAddedPost('your info has been submitted 😊, your result are available in the Results page!')
+
+            // here we will add the starting values for roomba 
+            dispatch(addRoomDimension(data.roomDimension))
+
+            dispatch(addSubmitMessage('your info has been submitted 😊, your result are available in the Results page!'))
+            console.log(drivingInstructions)
             setTimeout(function () {
-                setAddedPost('')
-            }, 2000);//run this thing in 2 seconds to clear the message 
+                dispatch(addSubmitMessage(''));
+            }, 4000);//run this thing in 2 seconds to clear the message 
         },
 
 
     });
+
+
+    const north = () => dispatch(addDrivingInstructions('N'));
+    const south = () => dispatch(addDrivingInstructions('S'));
+    const east = () => dispatch(addDrivingInstructions('E'));
+    const west = () => dispatch(addDrivingInstructions('W'));
+    const backspace = () => dispatch(backspaceDrivingInstructions());
+    const clear = () => dispatch(clearDrivingInstructions());
+
+    // function output(userData) {
+    //     // const { roomDimension, initialRoombaLocation, dirtLocation, drivingInstructions } = object;
+    //     console.log(dirtLocation, 'this is the dirt location array thing ')
+    //     // dirtCollected = 0;
+    //     // wallsHit = 0;
+    //     // distanceTraveled = 0; // starts at one to count the initial position
+    //     currentRoombaLocation = initialRoombaLocation; 
+
+    //     console.log(` Step 1 | initial Roomba location ${initialRoombaLocation}, ----- , dirt collected so far ${dirtCollected}, wall hits ${wallsHit}`);
+    //     for (let i = 0; i < drivingInstructions.length; i++) {
+    //         if (drivingInstructions[i] === 'N') {
+
+    //             if(checkIfMaxY(currentRoombaLocation[1], roomDimension[1])){
+    //                 currentRoombaLocation[1] = currentRoombaLocation[1] + 1
+
+    //                 dirtCollected += checkForDirt(currentRoombaLocation, dirtLocation)
+    //                 console.log(` Step ${i + 2} | Roomba location ${currentRoombaLocation}, | Action ${drivingInstructions[i]}, |  dirt collected so far ${dirtCollected}, wall hits ${wallsHit}`); 
+    //                 // check max 
+    //                 distanceTraveled++;
+    //             }else{
+    //                 // this mean we hit a wall so we dont add, all we do is add a point to wall hit 
+    //                 wallsHit++; 
+    //                 // then we report the new stats
+    //                 console.log(` Step ${i + 2} |  Roomba location ${currentRoombaLocation}, | Action ${drivingInstructions[i]}, |  dirt collected so far ${dirtCollected}, wall hits ${wallsHit}`); 
+    //             }
+
+    //         }
+    //         else if (drivingInstructions[i] === 'S') {
+
+    //             // if it comes back as true then we may go south 
+    //             if(checkIfZero(currentRoombaLocation[1])){
+    //                 currentRoombaLocation[1] = currentRoombaLocation[1] - 1
+
+    //                 dirtCollected += checkForDirt(currentRoombaLocation, dirtLocation)
+    //                 console.log(`Step ${i + 2} |  Roomba location ${currentRoombaLocation}, | Action ${drivingInstructions[i]}, |  dirt collected so far ${dirtCollected}, wall hits ${wallsHit}`); 
+    //                 // check max 
+    //                 distanceTraveled++;
+    //             }else{
+    //                 // this mean we hit a wall so we dont add, all we do is add a point to wall hit 
+    //                 wallsHit++; 
+    //                 // then we report the new stats
+    //                 console.log(`Step ${i + 2} |  Roomba location ${currentRoombaLocation}, | Action ${drivingInstructions[i]}, |  dirt collected so far ${dirtCollected}, wall hits ${wallsHit}`); 
+    //             }
+
+    //         }
+    //         else if (drivingInstructions[i] === 'E') {
+
+    //             if(checkIfMaxX(currentRoombaLocation[0], roomDimension[0])){
+    //                 currentRoombaLocation[0] = currentRoombaLocation[0] + 1
+
+    //                 dirtCollected += checkForDirt(currentRoombaLocation, dirtLocation)
+    //                 console.log(`Step ${i + 2} |  Roomba location ${currentRoombaLocation}, | Action ${drivingInstructions[i]}, |  dirt collected so far ${dirtCollected}, wall hits ${wallsHit}`); 
+    //                 // check max 
+    //                 distanceTraveled++;
+    //             }else{
+    //                 // this mean we hit a wall so we dont add, all we do is add a point to wall hit 
+    //                 wallsHit++; 
+    //                 // then we report the new stats
+    //                 console.log(`Step ${i + 2} |  Roomba location ${currentRoombaLocation}, | Action ${drivingInstructions[i]}, |  dirt collected so far ${dirtCollected}, wall hits ${wallsHit}`); 
+    //             }
+
+    //         }
+    //         else if (drivingInstructions[i] === 'W') {
+
+    //             // if it comes back as true then we may go south 
+    //             if(checkIfZero(currentRoombaLocation[0])){
+    //                 currentRoombaLocation[0] = currentRoombaLocation[0] - 1
+
+    //                 dirtCollected += checkForDirt(currentRoombaLocation, dirtLocation)
+    //                 console.log(`Step ${i + 2} |  Roomba location ${currentRoombaLocation}, | Action ${drivingInstructions[i]}, |  dirt collected so far ${dirtCollected}, wall hits ${wallsHit}`); 
+    //                 // check max 
+    //                 distanceTraveled++;
+    //             }else{
+    //                 // this mean we hit a wall so we dont add, all we do is add a point to wall hit 
+    //                 wallsHit++; 
+    //                 // then we report the new stats
+    //                 console.log(`Step ${i + 2} | Roomba location ${currentRoombaLocation}, | Action ${drivingInstructions[i]}, |  dirt collected so far ${dirtCollected}, wall hits ${wallsHit}`); 
+    //             }
+
+    //         }
+    //     }
+    //     console.log(`
+    //     final location is ${initialRoombaLocation}
+    //     total dirt collected ${dirtCollected}
+    //     total distance Traveled was ${distanceTraveled} steps, 
+    //     total wall hits ${wallsHit}
+    //     `);
+    // }
+
+
+
+
+
+
+
 
     return (
         <Container fluid>
@@ -103,9 +247,44 @@ function Home(props) {
                                         </Form.Control.Feedback>
                                     </Col>
                                     <Col xs={6} className='mt-4' >
-                                        <Button variant="primary" type="submit">
+                                        <Button size='lg' variant="primary" type="submit">
                                             Submit
                                         </Button>
+                                        <Form.Control.Feedback type="isValid">
+                                            {
+                                                submitMsg ? <Alert msg={submitMsg} /> : ''
+                                            }
+                                        </Form.Control.Feedback>
+                                    </Col>
+                                    <Col xs={6} className='mt-4' >
+                                        <Row>
+                                            <Col xs={12} className='mt-4' >
+                                               <DrivingCard
+                                               drivingInstructions={drivingInstructions}
+                                               clicked={clicked}
+                                               />
+                                            </Col>
+                                            <Col xs={3} className='mt-4' >
+                                                <Button size="lg" onClick={north} >North</Button>
+                                            </Col>
+                                            <Col xs={3} className='mt-4' >
+                                                <Button size="lg" onClick={south} >South</Button>
+                                            </Col>
+                                            <Col xs={3} className='mt-4' >
+                                                <Button className='pr-4' size="lg" onClick={east} >East</Button>
+                                            </Col>
+                                            <Col xs={3} className='mt-4' >
+                                                <Button size="lg" onClick={west} >West</Button>
+                                            </Col>
+                                            <Col xs={6} className='mt-4' >
+                                                <Button block size="lg" onClick={backspace} >
+                                                    <i class="fas fa-backspace"></i>
+                                                </Button>
+                                            </Col>
+                                            <Col xs={6} className='mt-4' >
+                                                <Button block size="lg" onClick={clear} >Clear</Button>
+                                            </Col>
+                                        </Row>
                                     </Col>
                                 </Row>
                             </Col>
@@ -120,92 +299,3 @@ function Home(props) {
 }
 
 export default Home;
-
-
-
-// import React from 'react';
-// import ReactDOM from 'react-dom';
-// import { Formik, Field, Form, ErrorMessage, FieldArray } from 'formik';
-
-// const initialValues = {
-//   friends: [
-//     {
-//       name: '',
-//       email: '',
-//     },
-//   ],
-// };
-
-// const InviteFriends = () => (
-//   <div>
-//     <h1>Invite friends</h1>
-//     <Formik
-//       initialValues={initialValues}
-//       onSubmit={async (values) => {
-//         await new Promise((r) => setTimeout(r, 500));
-//         alert(JSON.stringify(values, null, 2));
-//       }}
-//     >
-//       {({ values }) => (
-//         <Form>
-//           <FieldArray name="friends">
-//             {({ insert, remove, push }) => (
-//               <div>
-//                 {values.friends.length > 0 &&
-//                   values.friends.map((friend, index) => (
-//                     <div className="row" key={index}>
-//                       <div className="col">
-//                         <label htmlFor={`friends.${index}.name`}>Name</label>
-//                         <Field
-//                           name={`friends.${index}.name`}
-//                           placeholder="Jane Doe"
-//                           type="text"
-//                         />
-//                         <ErrorMessage
-//                           name={`friends.${index}.name`}
-//                           component="div"
-//                           className="field-error"
-//                         />
-//                       </div>
-//                       <div className="col">
-//                         <label htmlFor={`friends.${index}.email`}>Email</label>
-//                         <Field
-//                           name={`friends.${index}.email`}
-//                           placeholder="jane@acme.com"
-//                           type="email"
-//                         />
-//                         <ErrorMessage
-//                           name={`friends.${index}.name`}
-//                           component="div"
-//                           className="field-error"
-//                         />
-//                       </div>
-//                       <div className="col">
-//                         <button
-//                           type="button"
-//                           className="secondary"
-//                           onClick={() => remove(index)}
-//                         >
-//                           X
-//                         </button>
-//                       </div>
-//                     </div>
-//                   ))}
-//                 <button
-//                   type="button"
-//                   className="secondary"
-//                   onClick={() => push({ name: '', email: '' })}
-//                 >
-//                   Add Friend
-//                 </button>
-//               </div>
-//             )}
-//           </FieldArray>
-//           <button type="submit">Invite</button>
-//         </Form>
-//       )}
-//     </Formik>
-//   </div>
-// );
-
-// ReactDOM.render(<InviteFriends />, document.getElementById('root'));
