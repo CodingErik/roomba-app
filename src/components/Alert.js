@@ -3,9 +3,9 @@ import Alert from 'react-bootstrap/Alert'
 import React from 'react'
 
 function AlertMsg(props) {
-    const { msg } = props; 
+    const { msg, color } = props; 
     return (
-        <Alert variant='primary'>
+        <Alert variant={color}>
             {msg} 
         </Alert>
     )

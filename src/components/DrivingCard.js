@@ -5,15 +5,16 @@ export default function DrivingCard(props) {
     const {
         drivingInstructions,
         clicked
-    } = props; 
+    } = props;
     return (
-        <Card>
-            <Card.Body>
-                <Card.Title>Driving Instructions</Card.Title>
-                <Card.Text>
-                    [{clicked && drivingInstructions? drivingInstructions + ',': 'Enter your driving directions for Roomba by pressing the buttons!'}]
+        <div>
+            <Card>
+                <Card.Body>
+                    <Card.Text>
+                        {clicked && drivingInstructions ? drivingInstructions + ',' : 'click buttons to enter driving instructions here... '}
                 </Card.Text>
-            </Card.Body>
-        </Card>
+                </Card.Body>
+            </Card>
+        </div>
     )
 }
