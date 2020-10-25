@@ -117,3 +117,42 @@
     //     total wall hits ${wallsHit}
     //     `);
     // }
+
+
+
+
+
+
+
+
+
+    {/* <input type="text"
+                                                    {...formik.getFieldProps('drivingInstructions')}
+                                                    value={drivingInstructions} />
+                                                {formik.errors.drivingInstructions} */}
+{/* <Form.Text
+                                                    // value={drivingInstructions}
+                                                    // onChange={(event)=> console.log(event.target.value)}
+                                                    // type="text"
+                                                    // maybe we do an onChange on this thing 
+                                                    // name="drivingInstructions"
+                                                    isInvalid={formik.errors.drivingInstructions}
+                                                    {...formik.getFieldProps('drivingInstructions')}> */}
+{/* </Form.Text> */ }
+{/* {formik.errors.drivingInstructions} */ }
+{/* <Form.Control
+                                                    type="text"
+                                                    as="textarea"
+                                                    rows="3"
+                                                    // value={drivingInstructions}
+                                                    // value={this.state.val}
+                                                    // onChange={e => setState({ val: e.target.value })}
+                                                    // name="drivingInstructions"
+                                                    isInvalid={formik.errors.drivingInstructions}
+                                                    {...formik.getFieldProps('drivingInstructions')}>
+                                                     { drivingInstructions }
+                                                    </Form.Control>
+                                                <Form.Control.Feedback type="invalid">
+                                                    {formik.errors.drivingInstructions}
+                                                </Form.Control.Feedback> */}
+{/* <div> {drivingInstructions} </div> */ }
