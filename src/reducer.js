@@ -35,6 +35,8 @@ export default (state = initialState, action) => {
       return { ...state, roombaLocation: action.payload }
     case ADD_DRIVING_INSTRUCTIONS:
       return { ...state, drivingInstructions: state.drivingInstructions.concat(action.payload), clicked: true }
+    case ADD_DIRT_LOCATION:
+      return { ...state, dirtLocation: action.payload }
     case BACKSPACE_DRIVING_INSTRUCTIONS:
       return { ...state, drivingInstructions: state.drivingInstructions.slice(0, -1) }
     case CLEAR_DRIVING_INSTRUCTIONS:

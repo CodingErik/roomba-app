@@ -14,6 +14,7 @@ import {
     clearDrivingInstructions,
     addRoomDimension,
     addRoombaLocation,
+    addDirtLocation,
     addSubmitMessage
 } from '../actions';
 import { useDispatch, useSelector } from 'react-redux';
@@ -27,6 +28,8 @@ import data from '../dummyData.json'
 
 
 function Home(props) {
+
+    const [element, setElement] = useState('')
 
     const dispatch = useDispatch();
 
@@ -53,8 +56,9 @@ function Home(props) {
             yRoomDimension: 0,
             xRoombaStarting: 0,
             yRoombaStarting: 0,
-            dirtLocation: [],
-            drivingInstructions: [],
+            xDirtLocation: 0,
+            yDirtLocation: 0,
+            drivingInstructions: '',
         },
         // dirty 
         validationSchema: Yup.object().shape({
@@ -62,8 +66,8 @@ function Home(props) {
             yRoomDimension: Yup.number().required('Required').min(0, 'y coordinate must be zero or greater'),
             xRoombaStarting: Yup.number().required('Required').min(0, 'x Roomba coordinate must be zero or greater'),
             yRoombaStarting: Yup.number().required('Required').min(0, 'y Roomba coordinate must be zero or greater'),
-            dirtLocation: Yup.array().of(Yup.object({x: Yup.number(), y: Yup.number()})),
-            drivingInstructions: Yup.array(Yup.string()),
+            xDirtLocation: Yup.number().required('Required').min(0, 'x dirt coordinate must be zero or greater'),
+            yDirtLocation: Yup.number().required('Required').min(0, 'y dirt coordinate must be zero or greater'),
         }),
 
         onSubmit: (values) => {
@@ -71,6 +75,7 @@ function Home(props) {
             // here we will add the starting values for roomba 
             dispatch(addRoomDimension([values.xRoomDimension, values.yRoomDimension]))
             dispatch(addRoombaLocation([values.xRoombaStarting, values.yRoombaStarting]))
+            dispatch(addDirtLocation([values.xDirtLocation, values.yDirtLocation]))
 
             dispatch(addSubmitMessage('your info has been submitted 😊, your result are available in the Results page!'))
             setTimeout(function () {
@@ -89,19 +94,22 @@ function Home(props) {
     const backspace = () => dispatch(backspaceDrivingInstructions());
     const clear = () => dispatch(clearDrivingInstructions());
 
+    const makeDiv = () => setElement(element.concat('hello this created'));
+
+
 
     return (
         <Container fluid>
             <Row>
-                <Col md={{ span: 9, offset: 3 }}>
+                <Col md={{ span: 9, offset: 2 }} className='mt-4' >
                     <Form onSubmit={formik.handleSubmit} >
                         <Form.Row>
-                            <Col xs={7}>
+                            <Col xs={12}>
                                 <Row>
                                     <Col xs={12}>
                                         <Form.Label>Room Dimensions </Form.Label>
                                     </Col>
-                                    <Col xs={6}>
+                                    <Col xs={12}>
                                         <Form.Text>Starting x dimension</Form.Text>
                                         <Form.Control
                                             type="number"
@@ -112,7 +120,7 @@ function Home(props) {
                                             {formik.errors.xRoomDimension}
                                         </Form.Control.Feedback>
                                     </Col>
-                                    <Col xs={6}>
+                                    <Col xs={12}>
                                         <Form.Text>Starting y dimension</Form.Text>
                                         <Form.Control
                                             type="number"
@@ -126,7 +134,7 @@ function Home(props) {
                                     <Col xs={12} className='mt-4' >
                                         <Form.Label>Roomba Starting Location </Form.Label>
                                     </Col>
-                                    <Col xs={6}>
+                                    <Col xs={12}>
                                         <Form.Text>Starting x coordinate</Form.Text>
                                         <Form.Control
                                             type="number"
@@ -137,7 +145,7 @@ function Home(props) {
                                             {formik.errors.xRoombaStarting}
                                         </Form.Control.Feedback>
                                     </Col>
-                                    <Col xs={6}>
+                                    <Col xs={12}>
                                         <Form.Text>Starting y coordinate</Form.Text>
                                         <Form.Control
                                             type="number"
@@ -148,35 +156,28 @@ function Home(props) {
                                             {formik.errors.yRoombaStarting}
                                         </Form.Control.Feedback>
                                     </Col>
-                                    <Col xs={6} className='mt-4' >
-                                        <Button size='lg' variant="primary" type="submit">
-                                            Submit
-                                        </Button>
-                                        <Form.Control.Feedback type="isValid">
-                                            {
-                                                submitMsg ? <Alert msg={submitMsg} /> : ''
-                                            }
-                                        </Form.Control.Feedback>
-                                    </Col>
-                                    <Col xs={6} className='mt-4' >
+                                    <Col xs={12} md={6} className='mt-4' >
                                         <Row>
                                             <Col xs={12} className='mt-4' >
+                                                <Form.Label>Driving Instructions</Form.Label>
+                                            </Col>
+                                            <Col xs={12} >
                                                 <DrivingCard
                                                     drivingInstructions={drivingInstructions}
                                                     clicked={clicked}
                                                 />
                                             </Col>
-                                            <Col xs={3} className='mt-4' >
-                                                <Button size="lg" onClick={north} >North</Button>
+                                            <Col xs={6} className='mt-4' >
+                                                <Button block size="lg" onClick={north} >North</Button>
                                             </Col>
-                                            <Col xs={3} className='mt-4' >
-                                                <Button size="lg" onClick={south} >South</Button>
+                                            <Col xs={6} className='mt-4' >
+                                                <Button block size="lg" onClick={south} >South</Button>
                                             </Col>
-                                            <Col xs={3} className='mt-4' >
-                                                <Button className='pr-4' size="lg" onClick={east} >East</Button>
+                                            <Col xs={6} className='mt-4' >
+                                                <Button block className='pr-4' size="lg" onClick={east} >East</Button>
                                             </Col>
-                                            <Col xs={3} className='mt-4' >
-                                                <Button size="lg" onClick={west} >West</Button>
+                                            <Col xs={6} className='mt-4' >
+                                                <Button block size="lg" onClick={west} >West</Button>
                                             </Col>
                                             <Col xs={6} className='mt-4' >
                                                 <Button block size="lg" onClick={backspace} >
@@ -187,6 +188,50 @@ function Home(props) {
                                                 <Button block size="lg" onClick={clear} >Clear</Button>
                                             </Col>
                                         </Row>
+                                    </Col>
+                                    <Col xs={12} md={6} className='mt-4' >
+                                        <Col xs={12} className='mt-4' >
+                                            <Form.Label>Dirt Location </Form.Label>
+                                        </Col>
+                                        <Col xs={12} className='mt-4' >
+                                            <Form.Text>x coordinate</Form.Text>
+                                            <Form.Control
+                                                type="number"
+                                                name="xDirtLocation"
+                                                isInvalid={formik.errors.xDirtLocation}
+                                                {...formik.getFieldProps('xDirtLocation')} />
+                                            <Form.Control.Feedback type="invalid">
+                                                {formik.errors.xDirtLocation}
+                                            </Form.Control.Feedback>
+                                        </Col>
+                                        <Col xs={12} className='mt-4'>
+                                            <Form.Text>y coordinate</Form.Text>
+                                            <Form.Control
+                                                type="number"
+                                                name="yDirtLocation"
+                                                isInvalid={formik.errors.yDirtLocation}
+                                                {...formik.getFieldProps('yDirtLocation')} />
+                                            <Form.Control.Feedback type="invalid">
+                                                {formik.errors.yDirtLocation}
+                                            </Form.Control.Feedback>
+                                        </Col>
+                                    </Col>
+                                    <Col xs={12} className='mt-4' >
+                                        {
+                                            drivingInstructions.length == 0 ? (
+                                                <Alert msg={'Fill out all field to submit'} color={'danger'} />
+                                            ) : (
+                                                    <Button size='lg' block variant="primary" type="submit">
+                                                        Submit
+                                                    </Button>
+                                                )
+
+                                        }
+                                        <Form.Control.Feedback type="isValid" >
+                                            {
+                                                submitMsg ? <Alert msg={submitMsg} color={'primary'} /> : ''
+                                            }
+                                        </Form.Control.Feedback>
                                     </Col>
                                 </Row>
                             </Col>
@@ -201,3 +246,39 @@ function Home(props) {
 }
 
 export default Home;
+
+
+
+
+
+
+{/* <input type="text"
+                                                    {...formik.getFieldProps('drivingInstructions')}
+                                                    value={drivingInstructions} />
+                                                {formik.errors.drivingInstructions} */}
+{/* <Form.Text
+                                                    // value={drivingInstructions}
+                                                    // onChange={(event)=> console.log(event.target.value)}
+                                                    // type="text"
+                                                    // maybe we do an onChange on this thing 
+                                                    // name="drivingInstructions"
+                                                    isInvalid={formik.errors.drivingInstructions}
+                                                    {...formik.getFieldProps('drivingInstructions')}> */}
+{/* </Form.Text> */ }
+{/* {formik.errors.drivingInstructions} */ }
+{/* <Form.Control
+                                                    type="text"
+                                                    as="textarea"
+                                                    rows="3"
+                                                    // value={drivingInstructions}
+                                                    // value={this.state.val}
+                                                    // onChange={e => setState({ val: e.target.value })}
+                                                    // name="drivingInstructions"
+                                                    isInvalid={formik.errors.drivingInstructions}
+                                                    {...formik.getFieldProps('drivingInstructions')}>
+                                                     { drivingInstructions }
+                                                    </Form.Control>
+                                                <Form.Control.Feedback type="invalid">
+                                                    {formik.errors.drivingInstructions}
+                                                </Form.Control.Feedback> */}
+{/* <div> {drivingInstructions} </div> */ }
