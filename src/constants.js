@@ -9,6 +9,21 @@ export const CLEAR_DRIVING_INSTRUCTIONS = 'CLEAR_DRIVING_INSTRUCTIONS';
 
 export const ADD_SUBMITMESSAGE = 'ADD_SUBMITMESSAGE'; 
 
+// distance traveled
+export const INCREASE_DISTANCE_TRAVELED = 'INCREASE_DISTANCE_TRAVELED'; 
 
+// wall hit
+export const INCREASE_WALL_HIT = 'INCREASE_WALL_HIT';
+
+// dirt collected
+export const INCREASE_DIRT_COLLECTED = 'INCREASE_DIRT_COLLECTED';
+
+// update Roomba location 
+export const INCREASE_X = 'INCREASE_X'; 
+export const INCREASE_Y = 'INCREASE_Y'; 
+export const DECREASE_X = 'DECREASE_X'; 
+export const DECREASE_Y = 'DECREASE_Y'; 
+
+export const SUBMIT_RESULTS = 'SUBMIT_RESULTS'; 
 export const POST_RESULTS = 'POST_RESULTS'; 
 
