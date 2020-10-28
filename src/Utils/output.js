@@ -7,7 +7,7 @@ const output = (data) => {
     const { roomDimension, roombaLocation, dirtLocation, drivingInstructions, dirtCollected, wallsHit } = data;
 
     let currentRoombaLocation = roombaLocation;
-    let dirtCollectedPerStep = dirtCollected;
+    let dirtCollectedPerStep = 0;
     let wallHitByStep = wallsHit;
     let distanceTraveledPerStep = 0;
     let results = [];
@@ -27,8 +27,8 @@ const output = (data) => {
 
             if (coordinate.checkIfMaxY(currentRoombaLocation[1], roomDimension[1])) {
                 currentRoombaLocation[1] = currentRoombaLocation[1] + 1
-
-                dirtCollectedPerStep += checkForDirt(currentRoombaLocation, currentDirtLocation)
+                console.log(checkForDirt(currentRoombaLocation, currentDirtLocation), 'this should be a number ')
+                dirtCollectedPerStep = dirtCollectedPerStep + checkForDirt(currentRoombaLocation, currentDirtLocation)
                 // console.log(` Step ${i + 2} | Roomba location ${currentRoombaLocation}, | Action ${drivingInstructions[i]}, |  dirt collected so far ${dirtCollectedPerStep}, wall hits ${wallHitByStep}`);
                 distanceTraveledPerStep = distanceTraveledPerStep + 1;
                 results.push({
@@ -59,8 +59,8 @@ const output = (data) => {
             // if it comes back as true then we may go south 
             if (coordinate.checkIfZero(currentRoombaLocation[1])) {
                 currentRoombaLocation[1] = currentRoombaLocation[1] - 1
-
-                dirtCollectedPerStep += checkForDirt(currentRoombaLocation, currentDirtLocation)
+                console.log(checkForDirt(currentRoombaLocation, currentDirtLocation), 'this should be a number ')
+                dirtCollectedPerStep = dirtCollectedPerStep + checkForDirt(currentRoombaLocation, currentDirtLocation)
                 // console.log(`Step ${i + 2} |  Roomba location ${currentRoombaLocation}, | Action ${drivingInstructions[i]}, |  dirt collected so far ${dirtCollectedPerStep}, wall hits ${wallHitByStep}`);
                 // check max 
                 distanceTraveledPerStep = distanceTraveledPerStep + 1;
@@ -90,8 +90,8 @@ const output = (data) => {
 
             if (coordinate.checkIfMaxX(currentRoombaLocation[0], roomDimension[0])) {
                 currentRoombaLocation[0] = currentRoombaLocation[0] + 1
-
-                dirtCollectedPerStep += checkForDirt(currentRoombaLocation, currentDirtLocation)
+                console.log(checkForDirt(currentRoombaLocation, currentDirtLocation), 'this should be a number ')
+                dirtCollectedPerStep = dirtCollectedPerStep + checkForDirt(currentRoombaLocation, currentDirtLocation)
                 // console.log(`Step ${i + 2} |  Roomba location ${currentRoombaLocation}, | Action ${drivingInstructions[i]}, |  dirt collected so far ${dirtCollectedPerStep}, wall hits ${wallHitByStep}`);
                 // check max 
                 distanceTraveledPerStep = distanceTraveledPerStep + 1;
@@ -123,8 +123,8 @@ const output = (data) => {
             // if it comes back as true then we may go south 
             if (coordinate.checkIfZero(currentRoombaLocation[0])) {
                 currentRoombaLocation[0] = currentRoombaLocation[0] - 1
-
-                dirtCollectedPerStep += checkForDirt(currentRoombaLocation, currentDirtLocation)
+                console.log(checkForDirt(currentRoombaLocation, currentDirtLocation), 'this should be a number ')
+                dirtCollectedPerStep = dirtCollectedPerStep + checkForDirt(currentRoombaLocation, currentDirtLocation)
                 // console.log(`Step ${i + 2} |  Roomba location ${currentRoombaLocation}, | Action ${drivingInstructions[i]}, |  dirt collected so far ${dirtCollectedPerStep}, wall hits ${wallHitByStep}`);
                 // check max 
                 distanceTraveledPerStep = distanceTraveledPerStep + 1;
@@ -159,6 +159,8 @@ const output = (data) => {
         dirtCollectedPerStep: dirtCollectedPerStep,
         wallHitByStep: wallHitByStep
     });
+    console.log('this is the full result history')
+    console.log(results);
     return results;
 }
 
