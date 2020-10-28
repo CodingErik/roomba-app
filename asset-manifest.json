@@ -1,0 +1,22 @@
+{
+  "files": {
+    "main.js": "/roomba-app/static/js/main.ceeeb17d.chunk.js",
+    "main.js.map": "/roomba-app/static/js/main.ceeeb17d.chunk.js.map",
+    "runtime-main.js": "/roomba-app/static/js/runtime-main.a38dae84.js",
+    "runtime-main.js.map": "/roomba-app/static/js/runtime-main.a38dae84.js.map",
+    "static/css/2.2a86faee.chunk.css": "/roomba-app/static/css/2.2a86faee.chunk.css",
+    "static/js/2.21f41dc1.chunk.js": "/roomba-app/static/js/2.21f41dc1.chunk.js",
+    "static/js/2.21f41dc1.chunk.js.map": "/roomba-app/static/js/2.21f41dc1.chunk.js.map",
+    "index.html": "/roomba-app/index.html",
+    "precache-manifest.51bcf81c37094801bdaa6c314aed6299.js": "/roomba-app/precache-manifest.51bcf81c37094801bdaa6c314aed6299.js",
+    "service-worker.js": "/roomba-app/service-worker.js",
+    "static/css/2.2a86faee.chunk.css.map": "/roomba-app/static/css/2.2a86faee.chunk.css.map",
+    "static/js/2.21f41dc1.chunk.js.LICENSE.txt": "/roomba-app/static/js/2.21f41dc1.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.a38dae84.js",
+    "static/css/2.2a86faee.chunk.css",
+    "static/js/2.21f41dc1.chunk.js",
+    "static/js/main.ceeeb17d.chunk.js"
+  ]
+}
