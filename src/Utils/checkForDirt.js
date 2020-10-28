@@ -4,13 +4,15 @@ function checkForDirt(currentLocation, arrayOfDirt) {
     })
     // this returns an empty array if there are no matches or the location where there was dirt 
     if(result[0] === undefined){
-        // console.log(`we are not collecting dirt `);
-        return false; 
+        console.log(`we are not collecting dirt, also this is the result array`);
+        console.log(result)
+        return 0; 
     }
     else{
-        // console.log(`we are collecting dirt`);
+        console.log(`we are collecting dirt, also this is the result array `);
+        console.log(result)
         // we also could remove that array from the list of dirty location although not specified
-        return true; 
+        return 1; 
     }
 }
 

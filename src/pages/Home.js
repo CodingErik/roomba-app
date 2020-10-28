@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Form from 'react-bootstrap/Form'
@@ -18,25 +18,24 @@ import {
     addDirtLocation,
     addSubmitMessage,
     submitResults,
-    postResults,
-    increaseDistanceTraveled,
-    increaseWallhit,
-    increaseDirtCollected,
-    increaseX,
-    increaseY,
-    decreaseX,
-    decreaseY,
+    // postResults,
+    // increaseDistanceTraveled,
+    // increaseWallhit,
+    // increaseDirtCollected,
+    // increaseX,
+    // increaseY,
+    // decreaseX,
+    // decreaseY,
 } from '../actions';
 import { useDispatch, useSelector } from 'react-redux';
 
-// importing Utils 
-import coordinate from '../Utils/coordinates'
-import checkForDirt from '../Utils/checkForDirt'
+//importing Utils 
+import output from '../Utils/output'
 
 function Home(props) {
     const dispatch = useDispatch();
 
-    const [results, setResults] = useState(false);
+    // const [results, setResults] = useState(false);
 
     const [
         submitted,
@@ -48,7 +47,7 @@ function Home(props) {
         submitMsg,
         dirtCollected,
         wallsHit,
-        distanceTraveled,
+        // distanceTraveled,
     ] = useSelector((state) => [
         state.submitted,
         state.clicked,
@@ -100,168 +99,6 @@ function Home(props) {
     const west = () => dispatch(addDrivingInstructions('W'));
     const backspace = () => dispatch(backspaceDrivingInstructions());
     const clear = () => dispatch(clearDrivingInstructions());
-    //  when the data is submitted this function will run and dispatch the results 
-    // which will then be displayed in the in the results page 
-
-    const output = (data) => {
-        // const { roomDimension, roombaLocation, dirtLocation, drivingInstructions } = userData;
-        const { roomDimension, roombaLocation, dirtLocation, drivingInstructions, dirtCollected, wallsHit } = data;
-
-        let currentRoombaLocation = roombaLocation;
-        let dirtCollectedPerStep = dirtCollected;
-        let wallHitByStep = wallsHit;
-        let distanceTraveledPerStep = 0;
-        let results = [];
-
-        results.push({
-            step: 'step 1',
-            currentRoombaLocation,
-            dirtCollectedPerStep,
-            wallHitByStep
-        });
-        for (let i = 0; i < drivingInstructions.length; i++) {
-            if (drivingInstructions[i] === 'N') {
-
-                if (coordinate.checkIfMaxY(currentRoombaLocation[1], roomDimension[1])) {
-                    currentRoombaLocation[1] = currentRoombaLocation[1] + 1
-
-                    dirtCollectedPerStep += checkForDirt(currentRoombaLocation, dirtLocation)
-                    // console.log(` Step ${i + 2} | Roomba location ${currentRoombaLocation}, | Action ${drivingInstructions[i]}, |  dirt collected so far ${dirtCollectedPerStep}, wall hits ${wallHitByStep}`);
-                    distanceTraveledPerStep = distanceTraveledPerStep + 1;
-                    results.push({
-                        step: `Step ${i + 2}`,
-                        drivingInstructions: `$ Current drivingInstructions ${drivingInstructions[i]}`,
-                        currentRoombaLocation,
-                        dirtCollectedPerStep,
-                        wallHitByStep
-                    });
-                    // check max 
-                } else {
-                    // this mean we hit a wall so we dont add, all we do is add a point to wall hit 
-                    wallHitByStep++;
-                    // then we report the new stats
-                    // console.log(` Step ${i + 2} |  Roomba location ${currentRoombaLocation}, | Action ${drivingInstructions[i]}, |  dirt collected so far ${dirtCollectedPerStep}, wall hits ${wallHitByStep}`);
-                    results.push({
-                        step: `Step ${i + 2}`,
-                        drivingInstructions: `$ Current drivingInstructions ${drivingInstructions[i]}`,
-                        currentRoombaLocation,
-                        dirtCollectedPerStep,
-                        wallHitByStep
-                    });
-                }
-
-            }
-            else if (drivingInstructions[i] === 'S') {
-
-                // if it comes back as true then we may go south 
-                if (coordinate.checkIfZero(currentRoombaLocation[1])) {
-                    currentRoombaLocation[1] = currentRoombaLocation[1] - 1
-
-                    dirtCollectedPerStep += checkForDirt(currentRoombaLocation, dirtLocation)
-                    // console.log(`Step ${i + 2} |  Roomba location ${currentRoombaLocation}, | Action ${drivingInstructions[i]}, |  dirt collected so far ${dirtCollectedPerStep}, wall hits ${wallHitByStep}`);
-                    // check max 
-                    distanceTraveledPerStep = distanceTraveledPerStep + 1;
-                    results.push({
-                        step: `Step ${i + 2}`,
-                        drivingInstructions: `$ Current drivingInstructions ${drivingInstructions[i]}`,
-                        currentRoombaLocation,
-                        dirtCollectedPerStep,
-                        wallHitByStep
-                    });
-                } else {
-                    // this mean we hit a wall so we dont add, all we do is add a point to wall hit 
-                    wallHitByStep++;
-                    // then we report the new stats
-                    // console.log(`Step ${i + 2} |  Roomba location ${currentRoombaLocation}, | Action ${drivingInstructions[i]}, |  dirt collected so far ${dirtCollectedPerStep}, wall hits ${wallHitByStep}`);
-                    results.push({
-                        step: `Step ${i + 2}`,
-                        drivingInstructions: `$ Current drivingInstructions ${drivingInstructions[i]}`,
-                        currentRoombaLocation,
-                        dirtCollectedPerStep,
-                        wallHitByStep
-                    });
-                }
-
-            }
-            else if (drivingInstructions[i] === 'E') {
-
-                if (coordinate.checkIfMaxX(currentRoombaLocation[0], roomDimension[0])) {
-                    currentRoombaLocation[0] = currentRoombaLocation[0] + 1
-
-                    dirtCollectedPerStep += checkForDirt(currentRoombaLocation, dirtLocation)
-                    // console.log(`Step ${i + 2} |  Roomba location ${currentRoombaLocation}, | Action ${drivingInstructions[i]}, |  dirt collected so far ${dirtCollectedPerStep}, wall hits ${wallHitByStep}`);
-                    // check max 
-                    distanceTraveledPerStep = distanceTraveledPerStep + 1;
-
-                    results.push({
-                        step: `Step ${i + 2}`,
-                        drivingInstructions: `$ Current drivingInstructions ${drivingInstructions[i]}`,
-                        currentRoombaLocation,
-                        dirtCollectedPerStep,
-                        wallHitByStep
-                    });
-                } else {
-                    // this mean we hit a wall so we dont add, all we do is add a point to wall hit 
-                    wallHitByStep++;
-                    // then we report the new stats
-                    // console.log(`Step ${i + 2} |  Roomba location ${currentRoombaLocation}, | Action ${drivingInstructions[i]}, |  dirt collected so far ${dirtCollectedPerStep}, wall hits ${wallHitByStep}`);
-                    results.push({
-                        step: `Step ${i + 2}`,
-                        drivingInstructions: `$ Current drivingInstructions ${drivingInstructions[i]}`,
-                        currentRoombaLocation,
-                        dirtCollectedPerStep,
-                        wallHitByStep
-                    });
-                }
-
-            }
-            else if (drivingInstructions[i] === 'W') {
-
-                // if it comes back as true then we may go south 
-                if (coordinate.checkIfZero(currentRoombaLocation[0])) {
-                    currentRoombaLocation[0] = currentRoombaLocation[0] - 1
-
-                    dirtCollectedPerStep += checkForDirt(currentRoombaLocation, dirtLocation)
-                    // console.log(`Step ${i + 2} |  Roomba location ${currentRoombaLocation}, | Action ${drivingInstructions[i]}, |  dirt collected so far ${dirtCollectedPerStep}, wall hits ${wallHitByStep}`);
-                    // check max 
-                    distanceTraveledPerStep = distanceTraveledPerStep + 1;
-                    results.push({
-                        step: `Step ${i + 2}`,
-                        drivingInstructions: `$ Current drivingInstructions ${drivingInstructions[i]}`,
-                        currentRoombaLocation,
-                        dirtCollectedPerStep,
-                        wallHitByStep
-                    });
-                } else {
-                    // this mean we hit a wall so we dont add, all we do is add a point to wall hit 
-                    wallHitByStep++;
-                    // then we report the new stats
-                    // console.log(`Step ${i + 2} | Roomba location ${currentRoombaLocation}, | Action ${drivingInstructions[i]}, |  dirt collected so far ${dirtCollectedPerStep}, wall hits ${wallHitByStep}`);
-                    results.push({
-                        step: `Step ${i + 2}`,
-                        drivingInstructions: `$ Current drivingInstructions ${drivingInstructions[i]}`,
-                        currentRoombaLocation,
-                        dirtCollectedPerStep,
-                        wallHitByStep
-                    });
-                }
-
-            }
-        }
-    //     console.log(`
-    // final location is ${currentRoombaLocation}
-    // total dirt collected ${dirtCollectedPerStep}
-    // total distance Traveled was ${distanceTraveledPerStep} steps, 
-    // total wall hits ${wallHitByStep}
-    // `);
-    results.push({
-        step: `final step is ${results.length}`,
-        currentRoombaLocation: `final location is ${currentRoombaLocation}`,
-        dirtCollectedPerStep: `total dirt collected ${dirtCollectedPerStep}`,
-        wallHitByStep: `total wall hits ${wallHitByStep}`
-    });
-        return results; 
-    }
 
 
     return (
@@ -385,7 +222,7 @@ function Home(props) {
                                         </Col>
                                         <Col xs={12} className='mt-4' >
                                             {
-                                                drivingInstructions.length == 0 ? (
+                                                drivingInstructions.length === 0 ? (
                                                     <Alert msg={'Fill out all field to submit'} color={'danger'} />
                                                 ) : (
                                                         <Button size='lg' block variant="primary" type="submit">
