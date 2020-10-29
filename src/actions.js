@@ -51,9 +51,15 @@ export const postResults = (results) => ({
   type: POST_RESULTS,
   payload: results
 });
-export const submitResults = (results) => ({
-  type: SUBMIT_RESULTS
-});
+export const submitResults = (results) => {
+  return (dispatch, getState) => {
+    dispatch({ type: SUBMIT_RESULTS });
+
+    dispatch(postResults(getState()));
+
+  };
+};
+
 
 // distance Traveled
 export const increaseDistanceTraveled = () => ({
