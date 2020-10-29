@@ -5,6 +5,8 @@ import TableCell from './TableCell'
 
 function View(props) {
     const { data } = props;
+    console.log('is the data getting in the view? ')
+    console.log(data)
 
     return (
         <Table striped bordered hover>
@@ -18,7 +20,7 @@ function View(props) {
                 </tr>
             </thead>
             <tbody>
-               {data.map(eachStep => <TableCell {...eachStep} />)}
+               {/* {data.map(eachStep => <TableCell {...eachStep} />)} */}
             </tbody>
         </Table>
     )

@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import { useFormik } from 'formik';
 import * as Yup from 'yup';
 import Form from 'react-bootstrap/Form'
@@ -18,14 +18,7 @@ import {
     addDirtLocation,
     addSubmitMessage,
     submitResults,
-    // postResults,
-    // increaseDistanceTraveled,
-    // increaseWallhit,
-    // increaseDirtCollected,
-    // increaseX,
-    // increaseY,
-    // decreaseX,
-    // decreaseY,
+    postResults,
 } from '../actions';
 import { useDispatch, useSelector } from 'react-redux';
 
@@ -35,8 +28,9 @@ import output from '../Utils/output'
 function Home(props) {
     const dispatch = useDispatch();
 
-    // const [results, setResults] = useState(false);
+    const [trigger, setTrigger] = useState(false);
 
+    // redux state
     const [
         submitted,
         clicked,
@@ -47,6 +41,7 @@ function Home(props) {
         submitMsg,
         dirtCollected,
         wallsHit,
+        resultsData,
         // distanceTraveled,
     ] = useSelector((state) => [
         state.submitted,
@@ -58,9 +53,11 @@ function Home(props) {
         state.submitMsg,
         state.dirtCollected,
         state.wallsHit,
-        state.distanceTraveled
+        state.distanceTraveled,
+        state.resultsData
     ]);
 
+    // formik 
     const formik = useFormik({
         initialValues: {
             xRoomDimension: 0,
@@ -86,6 +83,7 @@ function Home(props) {
             dispatch(addSubmitMessage('your info has been submitted 😊, your result are available in the Results page!'))
             dispatch(submitResults())
 
+            setTrigger(true)
             setTimeout(function () {
                 dispatch(addSubmitMessage(''));
             }, 4000);//run 2 seconds to clear the message 
@@ -99,6 +97,26 @@ function Home(props) {
     const west = () => dispatch(addDrivingInstructions('W'));
     const backspace = () => dispatch(backspaceDrivingInstructions());
     const clear = () => dispatch(clearDrivingInstructions());
+
+    useEffect(() => {
+        console.log(Boolean(submitted))
+
+        if (trigger) {
+            //    let data =  output({
+            //         roomDimension,
+            //         roombaLocation,
+            //         dirtLocation,
+            //         drivingInstructions,
+            //         dirtCollected,
+            //         wallsHit,
+            //     })
+            //     setResults(data)
+            //     // console.log('this is inside the on update function')
+            console.log('form was submitted');
+            console.log(resultsData)
+        }
+
+    }, [trigger])
 
 
     return (
@@ -250,15 +268,7 @@ function Home(props) {
                 <Container fluid>
                     <Row>
                         <Col md={{ span: 9, offset: 2 }} className='mt-4' >
-
-                            <View data={output({
-                                roomDimension,
-                                roombaLocation,
-                                dirtLocation,
-                                drivingInstructions,
-                                dirtCollected,
-                                wallsHit,
-                            })} />
+                          <View data={resultsData} />
                         </Col>
                     </Row >
                 </Container >
@@ -269,7 +279,7 @@ function Home(props) {
 
 export default Home;
 
-
+/// microsoft javascript tutorial ///
 
 
 
